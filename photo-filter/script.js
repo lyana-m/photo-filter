@@ -1,6 +1,7 @@
 /********* implement css-filters *********/
 
 const inputs = document.querySelectorAll('.filters input');
+const root = document.querySelector(':root');
 
 function applyFilter(event) {
   // add filter value
@@ -8,10 +9,7 @@ function applyFilter(event) {
   const output = input.nextElementSibling;
   output.value = input.value;
 
-  // apply css-filter
-  const root = document.querySelector(':root');
-  const rootStyles = getComputedStyle(root);
-  const blurFilter = rootStyles.getPropertyValue('--blur');
+  // apply css-filter  
   const suffix = input.dataset.sizing;
   root.style.setProperty(`--${input.name}`, input.value + suffix);
 }
@@ -31,3 +29,23 @@ function activateBtn(event) {
 }
 
 btns.forEach(btn => btn.addEventListener('click', activateBtn));
+
+/********* implement reset fuction *********/
+
+const resetBtn = document.querySelector('.btn-reset');
+
+function reset() {
+  // reset inputs
+  inputs.forEach(input => input.value = input.defaultValue);  
+
+  // reset input values
+  const outputs = document.querySelectorAll('.filters output');
+  outputs.forEach(output => output.value = output.defaultValue);  
+
+  // reset css-filters
+  inputs.forEach(input => {
+    root.style.setProperty(`--${input.name}`, input.defaultValue + input.dataset.sizing);
+  });
+}
+
+resetBtn.addEventListener('click', reset);

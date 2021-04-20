@@ -36,11 +36,11 @@ const resetBtn = document.querySelector('.btn-reset');
 
 function reset() {
   // reset inputs
-  inputs.forEach(input => input.value = input.defaultValue);  
+  inputs.forEach(input => input.value = input.defaultValue);
 
   // reset input values
   const outputs = document.querySelectorAll('.filters output');
-  outputs.forEach(output => output.value = output.defaultValue);  
+  outputs.forEach(output => output.value = output.defaultValue);
 
   // reset css-filters
   inputs.forEach(input => {
@@ -49,3 +49,54 @@ function reset() {
 }
 
 resetBtn.addEventListener('click', reset);
+
+/********* implement picture downloading from GitHub *********/
+
+const nextPictureBtn = document.querySelector('.btn-next');
+let counter = 0;
+
+function getTimeOfTheDay() {
+  const now = new Date();
+  const hour = now.getHours();
+  let timeOfTheDay;
+  if (hour >= 6 && hour < 12) {
+    timeOfTheDay = 'morning';
+  } else if (hour >= 12 && hour < 18) {
+    timeOfTheDay = 'day';
+  } else if (hour >= 18 && hour < 24) {
+    timeOfTheDay = 'evening';
+  } else {
+    timeOfTheDay = 'night';
+  }
+  return timeOfTheDay;
+}
+
+function viewImage(src) {
+  const image = document.querySelector('img');
+  const img = new Image();
+  img.src = src;
+  img.onload = () => {
+    image.src = src;
+  }
+}
+
+function getNextPicture() {
+  const linkBase = 'https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/';
+  const timeOfTheDay = getTimeOfTheDay();
+  
+  let pictureNumber;  
+  if (counter < 20) {
+    counter++;
+  } else {
+    counter = 1;
+  }
+  if (counter < 10) {
+    pictureNumber = '0' + counter;
+  } else {
+    pictureNumber = counter.toString();
+  }
+  const src = linkBase + timeOfTheDay + '/' + pictureNumber + '.jpg';
+  viewImage(src);  
+}
+
+nextPictureBtn.addEventListener('click', getNextPicture);

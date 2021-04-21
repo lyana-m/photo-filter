@@ -53,6 +53,7 @@ resetBtn.addEventListener('click', reset);
 /********* implement picture downloading from GitHub *********/
 
 const nextPictureBtn = document.querySelector('.btn-next');
+const image = document.querySelector('img');
 let counter = 0;
 
 function getTimeOfTheDay() {
@@ -71,13 +72,12 @@ function getTimeOfTheDay() {
   return timeOfTheDay;
 }
 
-function viewImage(src) {
-  const image = document.querySelector('img');
+function viewImage(src) {  
   const img = new Image();
   img.src = src;
   img.onload = () => {
     image.src = src;
-  }
+  };
 }
 
 function getNextPicture() {
@@ -100,3 +100,19 @@ function getNextPicture() {
 }
 
 nextPictureBtn.addEventListener('click', getNextPicture);
+
+/********* implement picture downloading from PC *********/
+
+const fileInput = document.querySelector('.btn-load--input');
+
+function uploadFile() {  
+  const file = fileInput.files[0];
+  const reader = new FileReader();  
+  reader.onload = event => { 
+    image.src = event.target.result;  
+  };  
+  reader.readAsDataURL(file);
+  fileInput.value = null;
+}
+
+fileInput.addEventListener('change', uploadFile);

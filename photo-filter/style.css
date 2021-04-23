@@ -258,6 +258,11 @@ img {
   right: -5px;
   letter-spacing: 0;
 }
+canvas {
+  border:1px solid #000;
+  width: 500px;
+  height: 500px;
+}
 @media (max-width: 1024px) {
   .main {
     padding-top: 40px;

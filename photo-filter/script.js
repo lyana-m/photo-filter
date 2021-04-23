@@ -72,7 +72,7 @@ function getTimeOfTheDay() {
   return timeOfTheDay;
 }
 
-function viewImage(src) {  
+function viewImage(src) {
   const img = new Image();
   img.src = src;
   img.onload = () => {
@@ -83,8 +83,8 @@ function viewImage(src) {
 function getNextPicture() {
   const linkBase = 'https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/';
   const timeOfTheDay = getTimeOfTheDay();
-  
-  let pictureNumber;  
+
+  let pictureNumber;
   if (counter < 20) {
     counter++;
   } else {
@@ -96,23 +96,51 @@ function getNextPicture() {
     pictureNumber = counter.toString();
   }
   const src = linkBase + timeOfTheDay + '/' + pictureNumber + '.jpg';
-  viewImage(src);  
+  viewImage(src);
+  // drawImage(src);  
 }
 
 nextPictureBtn.addEventListener('click', getNextPicture);
 
-/********* implement picture downloading from PC *********/
+/********* implement picture uploading from PC *********/
 
 const fileInput = document.querySelector('.btn-load--input');
 
-function uploadFile() {  
+function uploadFile() {
   const file = fileInput.files[0];
-  const reader = new FileReader();  
-  reader.onload = event => { 
-    image.src = event.target.result;  
-  };  
+  const reader = new FileReader();
+  reader.onload = event => {
+    image.src = event.target.result;
+    // drawImage(event.target.result);
+  };
   reader.readAsDataURL(file);
   fileInput.value = null;
+
 }
 
 fileInput.addEventListener('change', uploadFile);
+
+/********* implement picture saving on PC *********/
+
+const canvas = document.querySelector('canvas');
+const saveBtn = document.querySelector('.btn-save');
+
+function downloadImage() {
+  const img = new Image();
+  img.setAttribute('crossOrigin', 'anonymous');
+  img.src = image.src;
+  img.onload = function () {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    const link = document.createElement('a');
+    link.download = 'download.png';    
+    link.href = canvas.toDataURL("image/png");  
+    link.click();
+    link.remove();
+  };
+}
+
+saveBtn.addEventListener('click', downloadImage);

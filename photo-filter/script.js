@@ -115,7 +115,6 @@ function uploadFile() {
   };
   reader.readAsDataURL(file);
   fileInput.value = null;
-
 }
 
 fileInput.addEventListener('change', uploadFile);
@@ -133,14 +132,29 @@ function downloadImage() {
     canvas.width = img.width;
     canvas.height = img.height;
     const ctx = canvas.getContext("2d");
+
+    const coeff = canvas.height / image.height;
+    const filters = Array.from(inputs).map(input => {
+      if (input.name === 'hue') {
+        return `${input.name}-rotate(${input.value}${input.dataset.sizing})`;
+      }
+      if (input.name === 'blur') {
+        return `${input.name}(${input.value * coeff}${input.dataset.sizing})`;
+      } else {
+        return `${input.name}(${input.value}${input.dataset.sizing})`;
+      }
+    }).join(' ');
+    ctx.filter = filters;
     ctx.drawImage(img, 0, 0);
 
     const link = document.createElement('a');
-    link.download = 'download.png';    
-    link.href = canvas.toDataURL("image/png");  
+    link.download = 'download.png';
+    link.href = canvas.toDataURL("image/png");
     link.click();
     link.remove();
   };
 }
 
 saveBtn.addEventListener('click', downloadImage);
+
+/********* implement fullscreen *********/

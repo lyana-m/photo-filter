@@ -22,10 +22,8 @@ const btns = document.querySelectorAll('.btn');
 
 function activateBtn(event) {
   const activeBtn = document.querySelector('.btn-active');
-  if (!event.target.classList.contains('btn-load--input')) {
-    activeBtn.classList.remove('btn-active');
-    event.target.classList.add('btn-active');
-  }
+  activeBtn.classList.remove('btn-active');
+  event.target.classList.add('btn-active');
 }
 
 btns.forEach(btn => btn.addEventListener('click', activateBtn));
@@ -106,15 +104,18 @@ nextPictureBtn.addEventListener('click', getNextPicture);
 
 const fileInput = document.querySelector('.btn-load--input');
 
-function uploadFile() {
+function uploadFile(event) {
   const file = fileInput.files[0];
   const reader = new FileReader();
   reader.onload = event => {
     image.src = event.target.result;
-    // drawImage(event.target.result);
   };
   reader.readAsDataURL(file);
   fileInput.value = null;
+  const loadBtn = document.querySelector('.btn-load');
+  const activeBtn = document.querySelector('.btn-active');
+  activeBtn.classList.remove('btn-active');
+  loadBtn.classList.add('btn-active');  
 }
 
 fileInput.addEventListener('change', uploadFile);

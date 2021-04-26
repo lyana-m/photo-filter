@@ -22,8 +22,11 @@ const btns = document.querySelectorAll('.btn');
 
 function activateBtn(event) {
   const activeBtn = document.querySelector('.btn-active');
+  const loadBtn = document.querySelector('.btn-load');
+  if (event.currentTarget !== loadBtn) {
   activeBtn.classList.remove('btn-active');
   event.target.classList.add('btn-active');
+}
 }
 
 btns.forEach(btn => btn.addEventListener('click', activateBtn));
@@ -115,7 +118,7 @@ function uploadFile(event) {
   const loadBtn = document.querySelector('.btn-load');
   const activeBtn = document.querySelector('.btn-active');
   activeBtn.classList.remove('btn-active');
-  loadBtn.classList.add('btn-active');  
+  loadBtn.classList.add('btn-active');    
 }
 
 fileInput.addEventListener('change', uploadFile);
